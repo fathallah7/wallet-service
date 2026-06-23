@@ -1,0 +1,60 @@
+services:
+  db:
+    image: postgres:alpine3.23
+    container_name: wallet-db
+
+    restart: unless-stopped
+
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: wallet_service
+
+    ports:
+      - "5433:5432"
+
+    volumes:
+      - postgres_data:/var/lib/postgresql
+
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  migrate:
+    build: .
+    container_name: wallet-migrate
+
+    depends_on:
+      db:
+        condition: service_healthy
+
+    command:
+      - migrate
+      - -path
+      - /app/db/migrations
+      - -database
+      - postgres://postgres:postgres@db:5432/wallet_service?sslmode=disable
+      - up
+
+    restart: "no"
+
+  api:
+    build: .
+    container_name: wallet-api
+
+    depends_on:
+      db:
+        condition: service_healthy
+
+    ports:
+      - "8080:8080"
+
+    env_file:
+      - .env.docker
+
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
