@@ -8,7 +8,6 @@
   <a href="https://github.com/golang-migrate/migrate"><img src="https://img.shields.io/badge/migrations-golang--migrate-blue" alt="Migrations"></a>
   <a href="https://www.postgresql.org/"><img src="https://img.shields.io/badge/database-PostgreSQL-4169E1?style=flat&logo=postgresql" alt="PostgreSQL"></a>
   <a href="https://jwt.io/"><img src="https://img.shields.io/badge/auth-JWT-000000?style=flat&logo=jsonwebtokens" alt="JWT"></a>
-  <img src="https://img.shields.io/badge/status-active-success" alt="Status">
 </p>
 
 ---
@@ -548,5 +547,3 @@ CREATE TABLE transactions (
 | `make migratedown`        | Rollback all migrations    |
 | `make migration name=xxx` | Create a new migration     |
 | `make install-tools`      | Install migration CLI tool |
-
-
